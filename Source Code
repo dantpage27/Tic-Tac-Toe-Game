@@ -1,5 +1,5 @@
 """*****************************************************************
-Title: Tic Tac Toe Game
+Title: Tic-Tac-Toe Game
 Author: Dan Page
 
 Description: This program is a simple Tic Tac Toe game where each
@@ -40,12 +40,12 @@ def start_game():
     # Create user info
     global user1, user2, mark1, mark2
     user1 = input("Who is going first? ")
-    print("Welcome {u}!".format(u=user1))
+    print("Welcome {user}!".format(user=user1))
     mark1 = input("Would you like to be X or O? ")
     print("\n")
 
     user2 = input("Who is going second? ")
-    print("Welcome {u}!".format(u=user2))
+    print("Welcome {user}!".format(user=user2))
     if mark1.upper() == "X":
         print("You are O's!")
         mark2 = "O"
