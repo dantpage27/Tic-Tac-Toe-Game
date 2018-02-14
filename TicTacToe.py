@@ -8,7 +8,7 @@ someone wins or they tie (when all board spots are full).  The
 players have the option of playing as many games as they'd like.
 
 Date Created: 02/10/2018
-Date Updated: 02/11/2018
+Date Updated: 02/13/2018
 *****************************************************************"""
 
 
@@ -37,8 +37,11 @@ def start_game():
 
     input("Press any key to continue...\n")
 
+
+# Gather User Information Function
+def user_info():
     # Create user info
-    global user1, user2, mark1, mark2
+    global user1, user2, mark1, mark2, board_size
     user1 = input("Who is going first? ")
     print("Welcome {user}!".format(user=user1))
     mark1 = input("Would you like to be X or O? ")
@@ -58,6 +61,23 @@ def start_game():
     spots1 = []
     spots2 = []
 
+    # Have user determine board size
+    while True:
+        board_size = input("How big would you like your board to be? (small, medium, large): ")
+        if board_size.lower() in ["small", "medium", "large"]:
+            break
+        else:
+            print("That's not a size, please try again")
+            continue
+
+    # Getting Board Dimension based on user input
+    if board_size.lower() == "small":
+        board_size = 5
+    elif board_size.lower() == 'medium':
+        board_size = 10
+    else:
+        board_size = 15
+
     input("\nPress any key to begin the game!\n")
 
 
@@ -70,25 +90,19 @@ def game_board():
 
     print("Here is the current Game Board:")
 
+    # Game Board Dimensions
+    board_width = board_size
+    spot_width = board_width // 5
+
     # Print Format with the spots list in order to dynamically insert X's/O's based on user input
-    print("""
-
-     {} | {} | {} 
-    ---|---|---
-     {} | {} | {} 
-    ---|---|---
-     {} | {} | {} 
-     
-
-    """.format(board_spots[0],
-               board_spots[1],
-               board_spots[2],
-               board_spots[3],
-               board_spots[4],
-               board_spots[5],
-               board_spots[6],
-               board_spots[7],
-               board_spots[8]))
+    print("%{sw}s%{sw}s%{sw}s%{sw}s%{sw}s".format(sw=spot_width) %
+          (str(board_spots[0]), "|", str(board_spots[1]), "|", str(board_spots[2])))
+    print(("-" * (board_width // 3) + "|") * 2 + ((board_width // 3) * "-"))
+    print("%{sw}s%{sw}s%{sw}s%{sw}s%{sw}s".format(sw=spot_width) %
+          (str(board_spots[3]), "|", str(board_spots[4]), "|", str(board_spots[5])))
+    print(("-" * (board_width // 3) + "|") * 2 + ((board_width // 3) * "-"))
+    print("%{sw}s%{sw}s%{sw}s%{sw}s%{sw}s".format(sw=spot_width) %
+          (str(board_spots[6]), "|", str(board_spots[7]), "|", str(board_spots[8])))
 
 
 # Player Input Function
@@ -154,10 +168,22 @@ def end_game():
 
 
 # THE GAME
+
+# Start Game
+start_game()
+
+# Set same players initially to False so user input function executes
+same_players = False
+
+# Game Loop
 while True:
 
-    # Start Game
-    start_game()
+    if not same_players:
+        user_info()
+    else:
+        print("Welcome based to the game, {u1} and {u2}!".format(u1=user1, u2=user2))
+        spots1 = []
+        spots2 = []
 
     # Show Board
     board_spots = [1, 2, 3, 4, 5, 6, 7, 8, 9]   # Spots on the board
@@ -201,6 +227,12 @@ while True:
     # Checks if players want to play again
     repeat = input("\nWould you like to play again?(y/n): ")
     if repeat.lower() == "y":
+        # If playing again, are they the same players?
+        same_users = input("Same players? (y/n): ")
+        if same_users.lower() == "y":
+            same_players = True
+        else:
+            same_players = False
         continue
     else:
         print("\nHave a great rest of your day!!!!")
